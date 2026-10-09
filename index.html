@@ -78,40 +78,45 @@ button{font:inherit;color:inherit;border:0;background:none;padding:0;cursor:poin
 @keyframes pulse{0%,100%{background:var(--face)}50%{background:#fff3c4}}
 @keyframes shake{0%,100%{transform:translateX(0)}25%{transform:translateX(-5px)}75%{transform:translateX(5px)}}
 
-/* ---------- game ---------- */
-#game{display:none;flex-direction:column}
+/* ---------- game (proportions measured from the reference screenshots) ---------- */
+#game{display:none;flex-direction:column;--u:min(1vw,4.6px)}
 #game.active{display:flex}
-.ghead{position:relative;z-index:3;display:flex;align-items:center;justify-content:space-between;padding:calc(var(--sat) + 62px) 18px 0}
-.lvname{position:absolute;left:50%;transform:translateX(-50%);bottom:-22px;font-weight:900;font-size:15px;color:#6d675c;white-space:nowrap}
+.ghead{position:relative;z-index:3;display:flex;align-items:center;justify-content:space-between;padding:calc(var(--sat) + 7.6vh) calc(var(--u)*2.4) 0}
+#btnPause{width:calc(var(--u)*11);height:calc(var(--u)*11);border-radius:calc(var(--u)*2.6)}
+#btnPause svg{width:45%;height:45%}
+.lvname{position:absolute;left:50%;transform:translateX(-50%);bottom:calc(var(--u)*3.4);font-weight:900;font-size:calc(var(--u)*3.3);color:#8a8478;white-space:nowrap}
 .lvname b{color:#d9534f}
-.score{min-width:136px;height:52px;border:3px solid var(--ink);border-radius:13px;background:#efe6d0;padding:5px;box-shadow:4px 5px 0 0 var(--gray-d),4px 5px 0 3px var(--ink)}
-.score span{display:flex;height:100%;align-items:center;justify-content:center;background:var(--dark);border:2px solid var(--ink);border-radius:8px;color:#fff;font-weight:900;font-size:24px;font-variant-numeric:tabular-nums}
-#boardWrap{position:relative;flex:1;min-height:0;z-index:2;margin:30px 8px 0}
+.score{width:calc(var(--u)*29.5);height:calc(var(--u)*11);border:3px solid var(--ink);border-radius:calc(var(--u)*2.6);background:#efe6d0;padding:calc(var(--u)*1.2);box-shadow:4px 5px 0 0 var(--gray-d),4px 5px 0 3px var(--ink)}
+.score span{display:flex;height:100%;align-items:center;justify-content:center;background:var(--dark);border:2px solid var(--ink);border-radius:calc(var(--u)*1.6);color:#fff;font-weight:900;font-size:calc(var(--u)*6);font-variant-numeric:tabular-nums}
+#boardWrap{position:relative;flex:1;min-height:0;z-index:2;margin:2.4vh calc(var(--u)*1.5) 0}
 #board{position:absolute;left:0;top:0}
-#trayWrap{position:relative;z-index:2;display:flex;align-items:stretch;margin:6px auto 0;width:min(calc(100vw - 28px),440px)}
-#tray{flex:1;display:flex;border:3px solid var(--ink);border-radius:14px 0 0 14px;background:#f1e9d5;padding:5px;box-shadow:0 5px 0 0 var(--gray-d),0 5px 0 3px var(--ink)}
-#tray.full{border-radius:14px}
-#bar{flex:1;background:var(--dark);border:2px solid var(--ink);border-radius:8px;position:relative;min-height:44px}
-#btnSlot{width:58px;border-radius:0 14px 14px 0;margin-left:-3px;font-size:40px;font-weight:600;line-height:1}
+#trayWrap{position:relative;z-index:2;display:flex;align-items:stretch;margin:1.6vh auto 0;width:calc(var(--u)*75.5);height:calc(var(--u)*13.6)}
+#tray{flex:1;display:flex;border:3px solid var(--ink);border-radius:calc(var(--u)*2.8) 0 0 calc(var(--u)*2.8);background:#f1e9d5;padding:calc(var(--u)*1.1);box-shadow:0 5px 0 0 var(--gray-d),0 5px 0 3px var(--ink)}
+#tray.full{border-radius:calc(var(--u)*2.8)}
+#bar{flex:1;background:var(--dark);border:2px solid var(--ink);border-radius:calc(var(--u)*1.6);position:relative}
+#btnSlot{width:calc(var(--u)*13);border-radius:0 calc(var(--u)*2.8) calc(var(--u)*2.8) 0;margin-left:-3px;font-size:calc(var(--u)*9);font-weight:600;line-height:1}
 #btnSlot .badge{background:var(--blue)}
 #btnSlot.gone{display:none}
-.boosters{position:relative;z-index:2;display:flex;justify-content:center;gap:22px;margin:30px 0 calc(var(--sab) + 26px)}
-.bst{width:100px;height:84px;flex-direction:column;gap:2px;font-weight:900;font-size:18px}
-.bst svg{width:30px;height:30px}
+.boosters{position:relative;z-index:2;display:flex;justify-content:center;gap:calc(var(--u)*5.2);margin:3.2vh 0 calc(var(--sab) + 14.5vh)}
+.bst{width:calc(var(--u)*18.6);height:calc(var(--u)*14.6);border-radius:calc(var(--u)*2.8);flex-direction:column;gap:0;font-weight:900;font-size:calc(var(--u)*3.9)}
+.bst svg{width:calc(var(--u)*6.6);height:calc(var(--u)*6.6)}
+.bst .badge,#btnSlot .badge{width:calc(var(--u)*6.4);min-width:0;height:calc(var(--u)*6.4);font-size:calc(var(--u)*3.4);top:calc(var(--u)*-2.6);right:calc(var(--u)*-2.6)}
 
 /* ---------- tiles ---------- */
 .tile{position:absolute;width:var(--tw);height:var(--th);will-change:transform}
 .tile::before{content:'';position:absolute;inset:0;transform:translate(var(--dp),var(--dp));border:var(--bw) solid var(--ink);border-radius:var(--rad);
-  background:var(--dep) repeating-linear-gradient(45deg,var(--ink) 0 1.2px,transparent 1.2px 3.6px) no-repeat right bottom/32% 32%}
+  background:var(--dep) repeating-linear-gradient(45deg,var(--ink) 0 1.1px,transparent 1.1px 3.3px) no-repeat right bottom/30% 30%}
 .tile .face{position:absolute;inset:0;background:var(--face);border:var(--bw) solid var(--ink);border-radius:var(--rad);display:flex;align-items:center;justify-content:center;overflow:hidden;transition:background-color .25s}
-.tile .ic{font-size:var(--fs);line-height:1;transition:filter .25s,opacity .25s;font-family:'Apple Color Emoji','Segoe UI Emoji','Noto Color Emoji',sans-serif}
+.tile .ic{width:var(--is);height:var(--is);display:block;overflow:visible}
+.tile .ic .g{display:none}
 .tile.covered .face{background:var(--cov)}
-.tile.covered .ic{filter:grayscale(1) brightness(.62) contrast(1.35);opacity:.62}
-.hideCov .tile.covered .ic,.hideCov .tile.q.covered .ic{opacity:0}
+.tile.covered .ic .c{display:none}
+.tile.covered .ic .g{display:inline}
+.hideCov .tile.covered .ic,.hideCov .tile.covered .qm{visibility:hidden}
+.tile .qm{font-family:'Nunito',ui-rounded,sans-serif;font-weight:900;font-size:var(--fs);line-height:1;color:#fff;-webkit-text-stroke:calc(var(--bw)*1.1) var(--ink);paint-order:stroke}
 .tile.q .face{background:var(--purple)}
-.tile.q .ic{font-family:'Nunito',sans-serif;font-weight:900;color:#fff;-webkit-text-stroke:calc(var(--bw)*.9) var(--ink);paint-order:stroke;font-size:calc(var(--fs)*1.08)}
 .tile.q.covered .face{background:var(--cov)}
-.tile.q.covered .ic{color:#8d877b;-webkit-text-stroke:0;filter:none;opacity:.9}
+.tile.q.covered .qm{color:#8d877b;-webkit-text-stroke:calc(var(--bw)*1.1) #4d4943}
 .tile.enter{animation:drop .45s cubic-bezier(.2,1.4,.4,1) backwards}
 @keyframes drop{from{opacity:0;transform:translateY(-34px) scale(.7)}}
 .tile.free-pop .face{animation:fpop .3s}
@@ -167,6 +172,15 @@ button{font:inherit;color:inherit;border:0;background:none;padding:0;cursor:poin
 @keyframes thunk{from{transform:translate(60px,-60px);opacity:0}}
 .confetti{position:fixed;top:-20px;width:9px;height:14px;z-index:31;pointer-events:none;border:1.5px solid var(--ink);animation:fall linear forwards}
 @keyframes fall{to{transform:translate(var(--dx),110vh) rotate(var(--r))}}
+
+/* ---- layout locked to the reference game's proportions (fractions of the full screen height) ---- */
+#game.active{display:block}
+#game .ghead{position:absolute;left:0;right:0;top:max(calc(var(--sat) + 8px), 8.1dvh);padding:0 calc(var(--u)*2.4)}
+#game .lvname{display:none}
+#game #boardWrap{position:absolute;left:calc(var(--u)*1.2);right:calc(var(--u)*1.2);top:15dvh;bottom:33.2dvh;margin:0}
+#game #trayWrap{position:absolute;left:50%;transform:translateX(-50%);top:68dvh;margin:0}
+#game .boosters{position:absolute;left:0;right:0;top:76dvh;margin:0}
+.toast{bottom:auto;top:60dvh}
 </style>
 </head>
 <body>
@@ -200,6 +214,7 @@ button{font:inherit;color:inherit;border:0;background:none;padding:0;cursor:poin
   </div>
 </section>
 
+<svg id="sprite" width="0" height="0" style="position:absolute" aria-hidden="true"></svg>
 <div id="fly"></div>
 <div id="ov" class="ov"></div>
 <script>/* ===== Level generator: 1000 deterministic, always-solvable levels ===== */
@@ -222,17 +237,17 @@ function levelParams(n) {
   const m = n % 10;
   const hard = m === 0;
   const s = clamp(base + (hard ? 0.07 : m === 1 && n > 10 ? -0.03 : 0), 0, 1);
-  let tiles = Math.round((48 + 144 * s) / 3) * 3;
+  let tiles = Math.round((66 + 132 * s) / 3) * 3;
   if (hard) tiles += 6;
-  tiles = clamp(tiles, 48, 198);
+  tiles = clamp(tiles, 66, 204);
   const groups = tiles / 3;
-  const kinds = Math.min(groups - 2, clamp(Math.round(8 + s * 14), 8, 22));
-  const maxTray = clamp(5 + Math.round(s * 1.2) + (hard ? 1 : 0), 5, 6);
-  const pNew = clamp(0.62 + s * 0.25 + (hard ? 0.05 : 0), 0, 0.92);
-  const cover = clamp(0.6 + s * 0.22 + (hard ? 0.03 : 0), 0, 0.86);   // share of tiles covered at start
-  const layers = Math.round(3 + s * 4);
-  const mystery = n < 3 ? 0 : Math.round(2 + s * 6 + (hard ? 2 : 0)); // number of ? tiles
-  const hidden = n >= 900 || (n >= 750 && n % 2 === 0) || (n >= 500 && n % 4 === 0);
+  const kinds = Math.min(groups - 4, clamp(Math.round(18 + s * 2), 18, 20));
+  const maxTray = 6;
+  const pNew = clamp(0.9 + s * 0.05 + (hard ? 0.03 : 0), 0, 0.97);
+  const cover = clamp(0.7 + s * 0.17 + (hard ? 0.03 : 0), 0, 0.88);   // share of tiles covered at start
+  const layers = Math.round(3 + s * 2.5);
+  const mystery = Math.round(2 + s * 3 + (hard ? 1 : 0)); // number of ? tiles
+  const hidden = n >= 900 || (n >= 700 && n % 2 === 0) || (n >= 400 && n % 4 === 0);
   const boosters = { undo: 1, hint: 1, shuffle: 1, slot: 1 };
   const P = { n, d: s, hard, tiles, kinds, maxTray, pNew, cover, layers, mystery, hidden, boosters };
   if (typeof globalThis.PARAM_OVERRIDE === 'function') Object.assign(P, globalThis.PARAM_OVERRIDE(P));
@@ -294,8 +309,8 @@ function buildLayout(T, p, rnd) {
   for (let cand = 0; cand < 36; cand++) {
     const L = p.layers + (cand % 3) - 1;
     const area = T / (L * 0.62);
-    const C = clamp(Math.round(Math.sqrt(area * 0.95) + rnd() * 1.4 - 0.7), 4, 8);
-    const R = clamp(Math.round(area / C + rnd() * 1.4 - 0.7), 4, 9);
+    const C = clamp(Math.round(Math.sqrt(area * 1.1) + rnd() * 1.4 - 0.5), 6, 8);
+    const R = clamp(Math.round(area / C + rnd() * 1.4 - 0.4), 5, 9);
     let shape = T < 80 ? smallShapes[Math.floor(rnd() * smallShapes.length)] : SHAPE_NAMES[Math.floor(rnd() * SHAPE_NAMES.length)];
     if ((shape === 'ring2' && (C < 6 || R < 6)) || (shape === 'ring' && (C < 5 || R < 5))) shape = 'diamond';
     const mask = baseMask(shape, C, R, rnd);
@@ -420,8 +435,7 @@ function generateLevel(n) {
     idx.slice(0, m).forEach(i => tiles[i].q = true);
   }
   const theme = (n * 3) % THEMES.length;
-  // map abstract kinds to random icons of the theme
-  const icons = THEMES[theme].icons.slice();
+  const icons = [...Array(THEMES[theme].count).keys()];
   for (let i = icons.length - 1; i > 0; i--) { const j = Math.floor(rnd() * (i + 1)); [icons[i], icons[j]] = [icons[j], icons[i]]; }
   const lvl = { n, p, tiles, solution, theme, icons: icons.slice(0, p.kinds), shape: lay.shape, cov: lay.cov };
   levelCache.set(n, lvl);
@@ -429,19 +443,157 @@ function generateLevel(n) {
   return lvl;
 }
 
-/* ---- Themes: icon set + top decoration style ---- */
+/* ---- Themes: icon set key (see icons.js) + top decoration style ---- */
 const THEMES = [
-  { name: 'winter', deco: 'pine', icons: ['🎄','🎅','⛄','🎁','🔔','🕯️','⭐','🍪','🧦','🦌','❄️','🎀','🍬','🍭','🧣','🧤','🛷','🥛','🍫','🎉','🧸','🍷','☕','🔥','🏠','🎿','🪅','🍰'] },
-  { name: 'food', deco: 'berry', icons: ['🍔','🍕','🌭','🥪','🌮','🍟','🍩','🍦','🧁','🍰','🥐','🥨','🥞','🧇','🍳','🥓','🍗','🍤','🍣','🍙','🥟','🍜','🧀','🍿','🥤','🍪','🥯','🍝','🌯','🥧'] },
-  { name: 'fruit', deco: 'tropical', icons: ['🍎','🍐','🍊','🍋','🍌','🍉','🍇','🍓','🫐','🍒','🍑','🥭','🍍','🥥','🥝','🍅','🍆','🥑','🥦','🥕','🌽','🌶️','🥔','🧄','🧅','🥜','🍄','🫑','🥒','🍈'] },
-  { name: 'animals', deco: 'meadow', icons: ['🐶','🐱','🐭','🐹','🐰','🦊','🐻','🐼','🐨','🐯','🦁','🐮','🐷','🐸','🐵','🐔','🐧','🦉','🐴','🦄','🐝','🐞','🦋','🐢','🐙','🦀','🐠','🐬','🐳','🦒'] },
-  { name: 'fun', deco: 'autumn', icons: ['⚽','🏀','🏈','⚾','🎾','🏐','🎱','🏓','🥊','🎯','🎳','⛳','🛹','🎮','🎲','🧩','🎸','🎺','🎻','🥁','🎤','🎧','🏆','🥇','🪁','🎨','🎬','🎹','🪀','🏹'] },
-  { name: 'garden', deco: 'blossom', icons: ['🌸','🌻','🌹','🌷','🌼','🌵','🌴','🍀','🍁','🌿','🌾','🐌','🐛','🌈','☀️','🌙','💧','⚡','🌊','🌋','🪨','🪺','🦔','🌳','🍂','🐿️','🦜','🪷','🪻','🌰'] },
-  { name: 'home', deco: 'ivy', icons: ['⏰','📚','✏️','📎','✂️','🔑','🔒','💡','🔦','🎈','🪴','🧹','🧺','🛁','🪑','🖼️','📷','📱','💻','⌚','🎒','👓','👑','💎','🧲','🔮','🪄','☂️','🧵','🪞'] },
-  { name: 'travel', deco: 'palm', icons: ['🚗','🚕','🚌','🚓','🚑','🚒','🚜','🏍️','🚲','🛴','✈️','🚀','🚁','⛵','🚂','🚢','🛸','🗽','🗼','🏰','🎡','🎢','⛺','🏝️','🗻','🧭','🗺️','🎠','⛲','🚦'] },
+  { key: 'fruit', deco: 'tropical', count: 20 },
+  { key: 'winter', deco: 'pine', count: 20 },
+  { key: 'snack', deco: 'meadow', count: 20 },
+  { key: 'garden', deco: 'ivy', count: 20 },
+  { key: 'zen', deco: 'blossom', count: 20 },
 ];
 
 if (false) module.exports = { generateLevel, levelParams, coveredBy, THEMES, TOTAL_LEVELS };
+
+/* ===== Tile icons: flat line-art, drawn on a 64x64 grid ===== */
+const K = '#2b2724';
+const SW = `stroke="${K}" stroke-width="3" stroke-linejoin="round" stroke-linecap="round"`;
+const Pt = (d, f) => `<path d="${d}" fill="${f}" ${SW}/>`;
+const Ci = (x, y, r, f) => `<circle cx="${x}" cy="${y}" r="${r}" fill="${f}" ${SW}/>`;
+const El = (x, y, rx, ry, f, a = 0) => `<ellipse cx="${x}" cy="${y}" rx="${rx}" ry="${ry}" fill="${f}" ${SW}${a ? ` transform="rotate(${a} ${x} ${y})"` : ''}/>`;
+const Rc = (x, y, w, h, r, f) => `<rect x="${x}" y="${y}" width="${w}" height="${h}" rx="${r}" fill="${f}" ${SW}/>`;
+const Ln = (d, w = 3, c = K) => `<path d="${d}" fill="none" stroke="${c}" stroke-width="${w}" stroke-linecap="round" stroke-linejoin="round"/>`;
+const Dt = (x, y, r = 1.7, c = K) => `<circle cx="${x}" cy="${y}" r="${r}" fill="${c}"/>`;
+const Hl = d => `<path d="${d}" fill="none" stroke="#ffffff" stroke-width="2.6" stroke-linecap="round"/>`;
+const leaf = (x, y, a, s = 1, f = '#7cc068') => `<g transform="translate(${x} ${y}) rotate(${a}) scale(${s})">${Pt('M0 0c4-6 12-7 16-4-3 6-10 8-16 4z', f)}</g>`;
+const star5 = (cx, cy, R, r) => { let d = ''; for (let i = 0; i < 10; i++) { const a = -Math.PI / 2 + i * Math.PI / 5, q = i % 2 ? r : R; d += (i ? 'L' : 'M') + (cx + q * Math.cos(a)).toFixed(1) + ' ' + (cy + q * Math.sin(a)).toFixed(1); } return d + 'Z'; };
+
+const RED = '#ec5f5f', RED2 = '#f59a8f', ORG = '#f5a245', YEL = '#f8d348', YEL2 = '#fbe8a0', GRN = '#7cc068', GRN2 = '#b5db6e', DGR = '#4f9a55',
+  BLU = '#6fa8ea', BLU2 = '#b3d4f7', PUR = '#8f5ccc', PUR2 = '#c9a6ee', PNK = '#f5a9c4', BRN = '#a8693a', BRN2 = '#d9a46a', WHT = '#ffffff', CRM = '#fff4dc', GRY = '#a7a197';
+
+const ICONS = {
+  fruit: [
+    /* pear */ Ln('M32 16c0-4 1-7 4-9') + Pt('M32 15c-6 0-7 6-7 10 0 4-8 7-8 16 0 9 7 15 15 15s15-6 15-15c0-9-8-12-8-16 0-4-1-10-7-10z', GRN2) + leaf(35, 11, -20, .8) + Dt(27, 42) + Dt(36, 47) + Dt(38, 38),
+    /* lemon */ Pt('M9 42c-2-14 11-28 28-28 8 0 14 3 17 7 2 14-11 28-28 28-8 0-14-3-17-7z', YEL) + Dt(24, 30) + Dt(30, 38) + Dt(40, 26) + Dt(38, 40),
+    /* plum */ Ln('M32 20c1-5 3-9 6-12') + Ci(31, 37, 18, PUR) + leaf(37, 11, -15, .8) + Hl('M21 32c1-4 3-6 6-7'),
+    /* grapes */ Ln('M34 14c0-4 2-7 5-9') + [[24, 20], [34, 20], [44, 20], [19, 30], [29, 30], [39, 30], [24, 40], [34, 40], [29, 50]].map(([x, y]) => Ci(x, y, 6.2, PUR)).join('') + leaf(37, 14, -30, .9),
+    /* apple */ Ln('M32 20c0-5 1-8 3-11') + Pt('M32 21c-5-4-19-3-19 12 0 12 8 22 14 22 3 0 3-2 5-2s2 2 5 2c6 0 14-10 14-22 0-15-14-16-19-12z', RED) + leaf(35, 13, -25, .8) + Hl('M19 30c1-4 3-6 6-6'),
+    /* avocado */ Pt('M32 7c-9 0-12 11-15 19-3 7-6 11-6 18 0 9 9 15 21 15s21-6 21-15c0-7-3-11-6-18-3-8-6-19-15-19z', '#5f9a45') + Pt('M32 14c-6 0-8 9-10 15-2 6-5 9-5 15 0 7 7 10 15 10s15-3 15-10c0-6-3-9-5-15-2-6-4-15-10-15z', '#dcea8c') + Ci(32, 42, 8, BRN),
+    /* banana */ Pt('M13 16c-2 20 12 36 34 34 5 0 7-3 5-6-18 2-28-10-30-28 0-3-3-4-5-4-2 0-4 1-4 4z', YEL) + Ln('M11 13l3 3') + Ln('M20 22c1 10 7 18 16 22', 2.2),
+    /* orange slice */ Ci(32, 32, 22, ORG) + Ci(32, 32, 16, '#fcd89a') + Ln('M32 16v32M16 32h32M21 21l22 22M43 21L21 43', 2.2),
+    /* cherries */ Ln('M22 36c2-12 8-20 16-26M42 34c-1-8-3-16-4-24') + Ci(21, 44, 10, RED) + Ci(43, 42, 10, RED) + leaf(37, 11, 10, .9) + Hl('M16 41c1-2 2-3 4-3'),
+    /* strawberry */ Pt('M32 57c-13-6-21-19-21-29 0-6 7-8 21-8s21 2 21 8c0 10-8 23-21 29z', RED) + Pt('M19 21l7 1 6-9 6 9 7-1-4 6c-5 3-13 3-18 0z', GRN) + [[22, 32], [32, 31], [42, 32], [27, 40], [37, 40], [32, 48]].map(([x, y]) => Dt(x, y, 1.8, '#fff1a8')).join(''),
+    /* watermelon */ Pt('M7 24a25 25 0 0 0 50 0z', GRN) + Pt('M12 24a20 20 0 0 0 40 0z', '#f76e6e') + Dt(24, 31, 2) + Dt(32, 36, 2) + Dt(40, 31, 2) + Dt(32, 28, 2),
+    /* pineapple */ Pt('M32 26l-8-16 8 6 8-6z', GRN) + Pt('M32 27l-14-8 6 10zM32 27l14-8-6 10z', DGR) + El(32, 43, 14, 16, YEL) + Ln('M22 34l20 20M28 30l18 18M36 30l-18 18M42 34l-20 20', 2),
+    /* coconut drink */ Ln('M36 24l10-16h6', 4, K) + Ln('M36 24l10-16h6', 1.6, ORG) + Ci(32, 40, 18, BRN) + El(32, 30, 13, 5, CRM),
+    /* raspberry */ [[26, 28], [38, 28], [20, 37], [32, 37], [44, 37], [26, 46], [38, 46], [32, 54]].map(([x, y]) => Ci(x, y, 6.2, '#e2456b')).join('') + Pt('M22 22l5-6 5 4 5-4 5 6c-6 3-14 3-20 0z', GRN),
+    /* kiwi */ Ci(32, 32, 22, '#9a6a3c') + Ci(32, 32, 17, '#a5d86a') + Ci(32, 32, 7, '#f3f8d6') + [...Array(10)].map((_, i) => { const a = i * Math.PI / 5; return Dt((32 + Math.cos(a) * 11).toFixed(1), (32 + Math.sin(a) * 11).toFixed(1), 1.5); }).join(''),
+    /* peach */ Ci(32, 38, 19, '#f7a97c') + Ln('M32 20c-4 8-4 26 0 36', 2.2) + leaf(33, 18, -30, .9) + Hl('M20 33c1-4 3-6 6-7'),
+    /* pomegranate */ Pt('M25 22l1-9 6 5 6-5 1 9z', '#c73b55') + Ci(32, 39, 19, '#d9455f') + Hl('M20 36c1-5 4-8 8-9'),
+    /* mango */ Pt('M14 40c-4-16 10-30 26-28 10 2 13 12 10 22-4 14-18 22-28 18-4-2-7-6-8-12z', '#f8b84a') + Pt('M38 12c4-4 10-4 13-1-4 5-10 5-13 1z', GRN) + Hl('M20 38c0-8 6-16 14-18'),
+    /* blueberries */ Ci(22, 40, 11, '#5a73c9') + Ci(42, 40, 11, '#5a73c9') + Ci(32, 24, 11, '#5a73c9') + Ln('M30 22l4 4M34 22l-4 4M20 38l4 4M24 38l-4 4M40 38l4 4M44 38l-4 4', 2),
+    /* chili */ Pt('M44 16c4 0 6 4 4 8-6 16-18 28-34 30-3 0-3-3-1-4 14-6 22-18 26-30 1-3 3-4 5-4z', RED) + Pt('M44 16c0-4 3-8 8-9', 'none') + Pt('M40 18c2-3 6-4 10-2-1 3-5 5-10 2z', GRN),
+  ],
+  winter: [
+    /* candle */ Pt('M32 8c4 5 4 9 0 11-4-2-4-6 0-11z', YEL) + Rc(23, 22, 18, 26, 3, ORG) + Pt('M23 28c4 3 6-2 9 1s6 2 9-1', 'none') + leaf(31, 50, 160, 1.1, GRN) + leaf(33, 50, 20, 1.1, GRN) + Dt(32, 50, 3, RED),
+    /* mug */ Ln('M24 8c-2 3 2 5 0 8M32 8c-2 3 2 5 0 8M40 8c-2 3 2 5 0 8', 2.2) + Pt('M44 28h4a7 7 0 0 1 0 14h-4', 'none') + Rc(14, 22, 31, 32, 7, RED) + Pt('M29 44c-6-4-9-7-9-10a4 4 0 0 1 9-1 4 4 0 0 1 9 1c0 3-3 6-9 10z', GRN),
+    /* sleigh */ Ln('M10 46h36c5 0 8-3 8-7M10 46c-4 0-5-5-1-6M20 46v-8M38 46v-8') + Pt('M10 22c10 2 16 10 24 10 6 0 10-6 18-6 2 6 0 12-6 12H16c-4 0-6-10-6-16z', RED) + Pt('M10 22c10 2 16 10 24 10 6 0 10-6 18-6l1 4c-8 0-12 6-19 6-8 0-14-8-24-10z', YEL),
+    /* gift */ Rc(13, 30, 38, 24, 3, RED) + Rc(10, 22, 44, 10, 3, '#f27f7f') + Rc(28, 22, 8, 32, 0, GRN) + El(24, 17, 8, 5, GRN, 20) + El(40, 17, 8, 5, GRN, -20),
+    /* ornament */ Ln('M32 6v6') + Ci(32, 38, 18, BLU) + Rc(26, 14, 12, 7, 2, YEL) + Ln('M15 34c8 4 26 4 34 0M15 42c8 4 26 4 34 0', 2.4),
+    /* stocking */ Pt('M22 18h20v20c0 6 0 10-6 14-6 4-18 6-20 0-2-5 2-8 6-10V18z', RED) + Rc(19, 10, 26, 10, 3, WHT) + Pt('M28 48c-3-4-6-6-6-8a3 3 0 0 1 6-1 3 3 0 0 1 6 1c0 2-3 4-6 8z', GRN),
+    /* candy cane */ Ln('M26 56V22a10 10 0 0 1 20 0v4', 11) + Ln('M26 56V22a10 10 0 0 1 20 0v4', 6, WHT) + `<path d="M26 56V22a10 10 0 0 1 20 0v4" fill="none" stroke="${RED}" stroke-width="6" stroke-dasharray="4 5"/>`,
+    /* snowman */ Ci(32, 40, 16, WHT) + Rc(22, 10, 20, 16, 2, '#4a4540') + Rc(16, 24, 32, 5, 2, '#4a4540') + Dt(26, 37, 2.2) + Dt(38, 37, 2.2) + Pt('M32 41l10 3-10 2z', ORG) + Ln('M26 49c4 2 8 2 12 0', 2.2),
+    /* tree */ Pt('M32 8l14 20h-6l10 14H14l10-14h-6z', GRN) + Rc(28, 42, 8, 12, 1, BRN) + Dt(26, 30, 2.4, RED) + Dt(38, 36, 2.4, YEL) + Dt(33, 22, 2.4, BLU),
+    /* star */ Pt(star5(32, 34, 24, 10), YEL) + Ln('M12 10l3 3M52 10l-3 3', 2.2),
+    /* bell */ Pt('M32 12c-10 0-14 8-14 18v10l-5 7h38l-5-7V30c0-10-4-18-14-18z', YEL) + Ci(32, 50, 5, ORG) + Pt('M26 10c-4-4-10-2-8 2 1 2 6 2 8-2zM38 10c4-4 10-2 8 2-1 2-6 2-8-2z', RED),
+    /* mitten */ Pt('M20 42V22c0-8 6-12 12-12s12 4 12 12v20z', RED) + Pt('M20 30c-6-2-10 2-8 6 2 4 6 4 8 2', RED) + Rc(18, 42, 28, 10, 3, WHT) + Pt('M32 33c-4-3-6-5-6-7a3 3 0 0 1 6-1 3 3 0 0 1 6 1c0 2-2 4-6 7z', WHT),
+    /* cookie */ Ci(32, 32, 21, BRN2) + [[24, 24], [38, 22], [42, 36], [28, 38], [34, 46], [20, 34]].map(([x, y]) => Ci(x, y, 3, '#6b3f24')).join(''),
+    /* wreath */ `<path d="M32 10a22 22 0 1 0 0.01 0zM32 21a11 11 0 1 1-0.01 0z" fill="${GRN}" fill-rule="evenodd" ${SW}/>` + Pt('M32 46l-9 8v-8l9-4 9 4v8z', RED) + Dt(18, 26, 2.6, RED) + Dt(44, 20, 2.6, RED) + Dt(48, 36, 2.6, RED),
+    /* gingerbread */ Pt('M32 8a8 8 0 0 1 6 13l12 4c4 1 4 7 0 7H41l6 18c1 4-4 6-6 3l-9-12-9 12c-2 3-7 1-6-3l6-18h-9c-4 0-4-6 0-7l12-4A8 8 0 0 1 32 8z', BRN2) + Dt(29, 15, 1.8) + Dt(35, 15, 1.8) + Dt(32, 28, 2.2, WHT) + Dt(32, 35, 2.2, WHT),
+    /* hot glass */ Pt('M16 22h28l-3 32H19z', YEL2) + Pt('M17 30c4 3 8-2 13 1s9 2 13-1l-2 24H19z', '#f6c24e') + Ln('M24 22l-6-14', 4.5, K) + Ln('M24 22l-6-14', 2, BRN2) + Ci(44, 22, 9, ORG) + Ln('M44 14v16M36 22h16', 1.8),
+    /* snowflake */ Ln('M32 8v48M11 20l42 24M11 44l42-24', 7.5) + Ln('M26 12l6 6 6-6M26 52l6-6 6 6M12 28l8-2-2-8M52 36l-8 2 2 8M12 36l8 2-2 8M52 28l-8-2 2-8', 6.5) + Ln('M32 8v48M11 20l42 24M11 44l42-24', 3.4, '#8dbbf0') + Ln('M26 12l6 6 6-6M26 52l6-6 6 6M12 28l8-2-2-8M52 36l-8 2 2 8M12 36l8 2-2 8M52 28l-8-2 2-8', 2.6, '#8dbbf0'),
+    /* santa hat */ Pt('M14 44c2-18 12-30 26-30 8 0 12 8 10 22-2-6-6-10-10-10-10 0-16 10-16 18z', RED) + Rc(10, 42, 36, 10, 5, WHT) + Ci(50, 40, 6, WHT),
+    /* lantern */ Ln('M26 12a6 6 0 0 1 12 0') + Rc(22, 12, 20, 6, 2, '#5a5550') + Rc(20, 18, 24, 32, 4, YEL2) + Ln('M20 26h24M20 42h24M32 18v32', 2) + Pt('M32 28c3 4 3 7 0 9-3-2-3-5 0-9z', ORG) + Rc(18, 50, 28, 6, 2, '#5a5550'),
+    /* reindeer */ Ln('M22 22c-4-6-4-12 0-16M22 14l-6-2M42 22c4-6 4-12 0-16M42 14l6-2', 3.4, BRN) + El(32, 38, 15, 17, BRN2) + Dt(26, 34, 2.2) + Dt(38, 34, 2.2) + Ci(32, 46, 5, RED) + El(18, 28, 5, 3, BRN2, -30) + El(46, 28, 5, 3, BRN2, 30),
+  ],
+  snack: [
+    /* hotdog */ Pt('M10 34c0-6 6-8 12-8h20c6 0 12 2 12 8s-6 12-22 12-22-6-22-12z', '#f4c27a') + Pt('M8 32c0-4 4-6 8-6h32c4 0 8 2 8 6s-4 6-8 6H16c-4 0-8-2-8-6z', '#d9534f') + Ln('M16 32c3-2 5 2 8 0s5 2 8 0 5 2 8 0 5 2 8 0', 2.4, YEL),
+    /* ice cream */ Pt('M20 30h24L32 58z', BRN2) + Ln('M24 36l12 12M30 34l9 9M40 36L28 48', 1.8) + Pt('M18 30a14 14 0 0 1 28 0c0 3-2 4-4 4H22c-2 0-4-1-4-4z', BLU2) + Hl('M24 24c1-3 3-5 6-6'),
+    /* cupcake */ Pt('M18 36h28l-4 20H22z', YEL) + Ln('M26 36l2 20M32 36v20M38 36l-2 20', 2) + Pt('M14 36c-2-8 4-14 10-14 2-6 14-6 16 0 6 0 12 6 10 14z', PNK) + Ci(32, 15, 4, RED),
+    /* donut */ `<path d="M32 10a22 22 0 1 0 .01 0zM32 25a7 7 0 1 1-.01 0z" fill="${BRN2}" fill-rule="evenodd" ${SW}/>` + `<path d="M32 14c10 0 18 6 18 15 0 6-6 4-8 8-3 4-9 2-12 4-4 2-10-2-12-6-4-2-6-4-6-8 0-8 10-13 20-13zM32 25a7 7 0 1 0 .01 0z" fill="${PNK}" fill-rule="evenodd" ${SW}/>` + Ln('M22 20l3 2M42 20l-2 3M44 30l3 1M18 30l3-1', 2.2, BLU),
+    /* pizza */ Pt('M10 16c14-6 30-6 44 0L32 58z', YEL) + Pt('M10 16c14-6 30-6 44 0l-2 5c-13-5-27-5-40 0z', BRN2) + Ci(26, 28, 4, RED) + Ci(38, 30, 4, RED) + Ci(32, 42, 4, RED),
+    /* burger */ Pt('M12 30c0-10 9-16 20-16s20 6 20 16z', '#f0b25b') + Ln('M10 34c4-2 6 2 10 0s6 2 10 0 6 2 10 0 6 2 10 0 6 2 6 0', 3, GRN) + Rc(11, 37, 42, 7, 3, BRN) + Pt('M12 47h40c0 5-4 8-9 8H21c-5 0-9-3-9-8z', '#f0b25b') + Dt(24, 22, 1.4) + Dt(32, 19, 1.4) + Dt(40, 22, 1.4),
+    /* fries */ Ln('M22 30V12M28 30V9M34 30V11M40 30V8M44 30V14', 5.5, K) + Ln('M22 30V12M28 30V9M34 30V11M40 30V8M44 30V14', 2.5, YEL) + Pt('M16 28h32l-4 28H20z', RED) + Pt('M27 38a5 5 0 0 0 10 0', 'none'),
+    /* fried egg */ Pt('M14 30c-4-12 8-20 18-16 8-6 22 0 18 12 6 8-2 20-12 18-6 6-18 4-20-4-8-2-8-8-4-10z', WHT) + Ci(32, 32, 9, YEL) + Hl('M28 29c1-2 2-3 4-3'),
+    /* cat */ Pt('M12 20l6-12 10 8h8l10-8 6 12c3 4 4 9 4 14 0 12-10 20-24 20S8 46 8 34c0-5 1-10 4-14z', GRY) + Dt(23, 34, 2.4) + Dt(41, 34, 2.4) + Ln('M28 40c2 2 6 2 8 0M32 38v2', 2.2) + Pt('M29 42c0 4 6 4 6 0z', RED2),
+    /* owl */ Pt('M14 18l6 4c8-4 16-4 24 0l6-4v20c0 12-8 20-18 20S14 50 14 38z', BRN) + Pt('M22 40c2-4 6-6 10-6s8 2 10 6c0 8-4 12-10 12s-10-4-10-12z', '#f2d3b0') + Ci(25, 28, 7, YEL2) + Ci(39, 28, 7, YEL2) + Dt(25, 28, 2.6) + Dt(39, 28, 2.6) + Pt('M32 32l-3 4h6z', ORG),
+    /* diamond */ Pt('M18 14h28l10 12-24 30L8 26z', BLU2) + Ln('M8 26h48M24 14l-4 12 12 30 12-30-4-12M20 26l12-12 12 12', 2),
+    /* drop */ Pt('M32 8c8 12 18 22 18 32a18 18 0 0 1-36 0c0-10 10-20 18-32z', BLU2) + Pt('M30 44a5 4 0 1 0 .01 0z', WHT),
+    /* crystal ball */ Ci(32, 28, 18, PUR2) + Pt('M20 48h24l4 8H16z', BRN) + Pt('M22 22c4-4 8 2 12-2s8 0 10 4c-4 6-14 8-22-2z', '#7d4cb8') + Ln('M14 10l2 4M50 8l-2 4M54 22h-3', 2.2, YEL),
+    /* lollipop */ Ln('M32 36v22', 4, K) + Ln('M32 36v22', 1.6, WHT) + Ci(32, 24, 16, PNK) + Ln('M32 24c0-4 6-4 6 0 0 6-12 6-12 0 0-8 18-8 18 0 0 9-12 13-20 7', 2.4, RED),
+    /* cheese */ Pt('M8 42l40-22 8 6v22H8z', YEL) + Pt('M8 42l40-22 8 6-48 16z', '#fce48a') + Ci(20, 48, 3.4, '#e8b72f') + Ci(36, 44, 4, '#e8b72f') + Ci(48, 50, 2.6, '#e8b72f'),
+    /* croissant */ Pt('M8 40c2-12 12-22 24-22s22 10 24 22c-6 0-8-4-12-6l-2 6c-4-2-6-6-10-6s-6 4-10 6l-2-6c-4 2-6 6-12 6z', '#e9a54e') + Ln('M22 26l2 8M32 22v10M42 26l-2 8', 2),
+    /* milk */ Pt('M20 22l4-10h16l4 10v32H20z', WHT) + Pt('M20 22h24v4H20z', BLU) + Rc(26, 32, 12, 12, 2, BLU2) + Rc(26, 6, 12, 6, 1, BLU),
+    /* popcorn */ [[22, 18], [32, 14], [42, 18], [27, 24], [38, 24]].map(([x, y]) => Ci(x, y, 7, WHT)).join('') + Pt('M14 24h36l-5 32H19z', RED) + Pt('M23 24l2 32h6l-1-32zM34 24l-1 32h6l2-32z', WHT),
+    /* sausage */ Pt('M14 46c-4-2-4-8 0-12 10-10 20-18 32-22 4-2 8 2 6 6-4 12-12 22-24 28-4 2-10 2-14 0z', '#ef7a6a') + Ln('M20 38l4 4M28 30l4 4M36 24l4 4', 2.2, '#fbc7b8') + Ln('M12 48l-4 4M50 14l4-4'),
+    /* taco */ Pt('M8 44a24 24 0 0 1 48 0z', YEL) + Ln('M14 32c4-4 6 0 10-4s6 0 10-4 6 0 10 0 6 4 8 8', 3.6, GRN) + Dt(24, 36, 2.6, RED) + Dt(36, 34, 2.6, RED) + Pt('M8 44a24 24 0 0 1 48 0', 'none'),
+  ],
+  garden: [
+    /* rose */ Ci(32, 32, 20, RED) + Ln('M32 32c0-4 6-4 6 0 0 6-12 6-12 0 0-8 18-8 18 0 0 10-24 12-24 0 0-10 20-14 26-4', 2.4),
+    /* daisy */ [...Array(10)].map((_, i) => El(32 + Math.cos(i * .628) * 15, 32 + Math.sin(i * .628) * 15, 7, 4, WHT, i * 36)).join('') + Ci(32, 32, 8, YEL),
+    /* tulip */ Ln('M32 36v22') + leaf(32, 54, -120, 1.2, GRN) + Pt('M18 14l7 6 7-8 7 8 7-6v14c0 8-6 12-14 12s-14-4-14-12z', '#ef6a8c'),
+    /* sunflower */ [...Array(12)].map((_, i) => El(32 + Math.cos(i * .5236) * 17, 32 + Math.sin(i * .5236) * 17, 7, 4, YEL, i * 30)).join('') + Ci(32, 32, 11, '#7a4a28') + Ln('M26 28l12 8M26 36l12-8', 1.6, '#c98a52'),
+    /* bluebell */ Ln('M14 10c14-2 24 4 26 16 1 8 0 14-2 18') + Pt('M28 26c-6 0-10 6-10 14l3-2 2 4 3-3 3 3 2-4 3 2c0-8-0-14-6-14z', BLU) + Pt('M36 42c-4 0-6 4-6 9l2-1 2 3 2-2 2 2 1-3 2 1c0-5-1-9-5-9z', BLU),
+    /* lavender */ Ln('M32 58V24') + [10, 17, 24, 31, 38].map((y, i) => El(32 + (i % 2 ? 4 : -4), y, 5, 4, PUR, 0)).join('') + leaf(32, 50, -150, 1, GRN) + leaf(32, 50, -30, 1, GRN),
+    /* cactus */ Pt('M18 42h28l-4 16H22z', '#e0835a') + Pt('M26 42V16a6 6 0 0 1 12 0v26z', GRN) + Pt('M26 30h-6a4 4 0 0 1-4-4v-6a3 3 0 0 1 6 0v4h4M38 26h6v-4a3 3 0 0 1 6 0v4a6 6 0 0 1-6 6h-6', GRN) + Ln('M31 20v2M33 30v2', 1.8),
+    /* leaf */ Pt('M10 54C8 30 24 12 54 10c2 28-16 44-44 44z', GRN) + Ln('M10 54L40 24M22 42h10M30 34v-10M30 34h10', 2.2),
+    /* mushroom */ Pt('M24 36h16l2 20H22z', CRM) + Pt('M8 36C8 20 18 10 32 10s24 10 24 26z', RED) + Ci(22, 24, 4, WHT) + Ci(38, 20, 3.4, WHT) + Ci(44, 30, 3, WHT),
+    /* clover */ Ln('M32 34c2 10 6 16 12 22') + Ci(32, 20, 9, GRN) + Ci(21, 34, 9, GRN) + Ci(43, 34, 9, GRN) + Dt(32, 30, 2.4, DGR),
+    /* blossom */ [...Array(5)].map((_, i) => `<g transform="rotate(${i * 72} 32 32)">${Pt('M32 30c-8-4-10-14-6-18 2 2 4 2 6 0 2 2 4 2 6 0 4 4 2 14-6 18z', PNK)}</g>`).join('') + Ci(32, 32, 5, '#f06a8e'),
+    /* potted plant */ Pt('M18 38h28l-4 18H22z', '#e0835a') + Rc(16, 34, 32, 6, 2, '#c96a44') + leaf(32, 34, -100, 1.5, GRN) + leaf(32, 34, -150, 1.3, GRN) + leaf(32, 34, -40, 1.3, GRN),
+    /* watering can */ Pt('M14 26h26v26H14z', BLU) + Ln('M40 34l14-12', 5, K) + Ln('M40 34l14-12', 2, BLU) + Pt('M50 18l8-2-2 8z', BLU) + Pt('M14 32c-8 0-8-12 0-12', 'none') + Ln('M20 26a7 7 0 0 1 14 0'),
+    /* butterfly */ Pt('M32 24c-6-12-22-14-22-4 0 8 10 12 22 12z', ORG) + Pt('M32 24c6-12 22-14 22-4 0 8-10 12-22 12z', ORG) + Pt('M32 32c-8 0-18 4-16 12 2 6 12 2 16-6z', YEL) + Pt('M32 32c8 0 18 4 16 12-2 6-12 2-16-6z', YEL) + El(32, 32, 3, 13, '#4a4540') + Ln('M30 19l-4-8M34 19l4-8', 2),
+    /* ladybug */ Pt('M14 36a18 18 0 0 1 36 0c0 12-8 20-18 20S14 48 14 36z', RED) + Pt('M20 22a12 9 0 0 1 24 0z', '#4a4540') + Ln('M32 22v34') + Ci(23, 36, 3.4, '#4a4540') + Ci(41, 36, 3.4, '#4a4540') + Ci(25, 47, 3, '#4a4540') + Ci(39, 47, 3, '#4a4540'),
+    /* bee */ El(28, 26, 8, 10, BLU2, -30) + El(40, 24, 8, 10, BLU2, 30) + El(32, 40, 16, 13, YEL) + Ln('M24 30v20M32 28v24M40 30v20', 3.4) + Ci(16, 38, 6, '#4a4540'),
+    /* snail */ Pt('M8 52h40c6 0 8-4 8-8V36c-2 0-4 2-4 6v4H10c-2 0-3 4-2 6z', '#f2c98a') + Ci(30, 34, 15, '#d98a5c') + Ln('M30 34c0-4 6-4 6 0 0 6-12 6-12 0 0-8 18-8 18 0', 2.4) + Ln('M52 36l-2-8M56 36l2-8', 2),
+    /* acorn */ Pt('M18 30h28c0 14-6 26-14 26S18 44 18 30z', BRN2) + Pt('M14 30c0-10 8-16 18-16s18 6 18 16z', BRN) + Ln('M32 14V8', 3.4) + Ln('M20 22l4 4M28 18l4 4M38 18l4 4', 1.6, '#e2b47e'),
+    /* carrot */ Pt('M44 20c4 4 2 8-2 12L14 54c-2 2-5-1-3-3l21-30c4-4 8-5 12-1z', ORG) + Ln('M30 30l4 4M24 38l3 3M20 46l3 3', 2) + Pt('M44 20c0-6 2-10 6-12-1 5 0 8 4 10-4 2-6 2-10 2z', GRN),
+    /* pumpkin */ Ln('M32 18c0-5 2-8 5-10', 3.4, BRN) + Pt('M32 18c-4-3-12-3-17 2-6 6-6 22 0 29 5 5 12 6 17 3 5 3 12 2 17-3 6-7 6-23 0-29-5-5-13-5-17-2z', ORG) + Ln('M32 19c-4 8-4 26 0 33M22 21c-4 9-3 21 1 29M42 21c4 9 3 21-1 29', 2.4) + leaf(37, 13, -10, .8),
+  ],
+  zen: [
+    /* sushi */ Ci(32, 32, 22, '#3a4a44') + Ci(32, 32, 16, WHT) + Pt('M32 24c-6-4-12 0-12 6 0 6 6 10 12 14 6-4 12-8 12-14 0-6-6-10-12-6z', RED),
+    /* onigiri */ Pt('M32 8c-6 0-24 32-24 40 0 6 4 8 10 8h28c6 0 10-2 10-8C56 40 38 8 32 8z', WHT) + Rc(20, 38, 24, 18, 2, '#3a4a44'),
+    /* teapot */ Pt('M14 30h-4c-4 0-4 10 4 12', 'none') + Pt('M48 32l10-8c2 2 2 4 0 6l-8 10', '#6e9a8a') + Pt('M12 32c0-8 8-12 20-12s20 4 20 12c0 14-8 22-20 22s-20-8-20-22z', '#6e9a8a') + Ln('M20 20c4-10 20-10 24 0', 3) + Rc(28, 14, 8, 6, 2, '#4f7a6a') + Ln('M14 36h36', 2.2),
+    /* tea cup */ Pt('M12 22h40l-4 26c-1 6-6 10-12 10h-8c-6 0-11-4-12-10z', '#d9e8d0') + El(32, 22, 20, 5, '#9ccc72') + Ln('M14 34c8 4 28 4 36 0', 2.4, '#6e9a8a'),
+    /* fan */ Pt('M32 50L8 26c12-14 36-14 48 0z', RED) + Ln('M32 50L14 20M32 50L24 15M32 50V14M32 50l8-35M32 50l18-30', 2) + Ci(32, 50, 4, BRN2),
+    /* umbrella */ Pt('M6 34c4-14 14-22 26-22s22 8 26 22c-3-3-6-3-9 0-3-3-6-3-9 0-3-3-5-3-8 0-3-3-5-3-8 0-3-3-6-3-9 0-3-3-6-3-9 0z', '#e7884f') + Ln('M32 12v42c0 4-6 4-6 0', 3) + Ln('M32 12L20 34M32 12l12 22', 1.8),
+    /* koi */ Pt('M10 32c8-12 24-16 36-10l10-8-2 18 2 18-10-8c-12 6-28 2-36-10z', '#f08c5a') + Pt('M20 26c6 0 8 4 4 8-4 2-6 0-8-2zM34 30c4-2 8 2 4 6-4 2-6-2-4-6z', WHT) + Dt(16, 30, 2),
+    /* lantern */ Ln('M32 6v6') + Rc(22, 10, 20, 5, 2, '#4a4540') + El(32, 33, 18, 19, RED) + Rc(22, 51, 20, 5, 2, '#4a4540') + Ln('M16 26h32M15 33h34M16 40h32', 2),
+    /* torii */ Pt('M6 14c10 2 42 2 52 0l-2 8H8z', RED) + Rc(10, 24, 44, 5, 1, RED) + Rc(16, 22, 6, 34, 1, RED) + Rc(42, 22, 6, 34, 1, RED) + Rc(29, 22, 6, 7, 0, '#4a4540'),
+    /* lucky cat */ Pt('M14 22l4-12 8 8h12l8-8 4 12c2 4 2 8 2 12 0 12-10 20-22 20S12 46 12 34c0-4 0-8 2-12z', WHT) + Ln('M22 30c2-2 4-2 6 0M36 30c2-2 4-2 6 0', 2.4) + Pt('M30 36c0 2 4 2 4 0z', RED2) + Pt('M16 44c8 4 24 4 32 0v6c-8 4-24 4-32 0z', RED) + Ci(32, 50, 4, YEL),
+    /* sake */ Pt('M22 18h12v8c6 4 8 10 8 18v8c0 4-4 6-14 6S14 56 14 52v-8c0-8 2-14 8-18z', '#e9e3d0') + Rc(20, 12, 16, 7, 2, '#4a4540') + Rc(17, 36, 22, 10, 1, BLU) + Pt('M44 40h14l-2 14H46z', '#e9e3d0'),
+    /* dango */ Ln('M32 8v50', 3.6, BRN) + Ci(32, 18, 8, PNK) + Ci(32, 32, 8, WHT) + Ci(32, 46, 8, GRN2),
+    /* bamboo */ Rc(16, 6, 10, 52, 3, GRN) + Rc(36, 12, 10, 46, 3, GRN) + Ln('M16 22h10M16 40h10M36 26h10M36 42h10', 3) + leaf(26, 22, -40, 1.1, DGR) + leaf(36, 26, -140, 1.1, DGR),
+    /* fuji */ Pt('M4 52l18-30c4-6 16-6 20 0l18 30z', '#6f8fd8') + Pt('M22 22c4-6 16-6 20 0l6 10c-4 2-6-2-10 0-4 2-6-2-10 0-4 2-6-2-10 0z', WHT) + Ci(50, 14, 6, RED),
+    /* daruma */ Pt('M32 8c14 0 22 12 22 26 0 14-10 22-22 22S10 48 10 34C10 20 18 8 32 8z', RED) + El(32, 30, 13, 11, CRM) + Ci(27, 29, 3.6, WHT) + Dt(27, 29, 1.6) + Ci(37, 29, 3.6, WHT) + Ln('M24 44c4 4 12 4 16 0', 2.4, YEL),
+    /* ramen */ Ln('M36 8L24 30M44 10L30 32', 3) + Pt('M8 30h48c0 14-10 24-24 24S8 44 8 30z', '#e7884f') + Ln('M12 36c10 4 30 4 40 0', 2.2, WHT) + Rc(22, 54, 20, 4, 2, '#c96a44'),
+    /* wind chime */ Ln('M32 6v8') + Pt('M18 32c0-12 6-18 14-18s14 6 14 18z', BLU2) + Ln('M22 26c6 2 14 2 20 0', 2.2, BLU) + Ln('M32 32v8') + Pt('M28 40h8v16h-8z', '#f4e2a8') + Ln('M30 46h4M30 50h4', 1.6, RED) + Dt(32, 36, 2.4),
+    /* wave */ Pt('M6 50c4-20 18-34 34-34 10 0 16 6 16 12-4-4-12-4-14 2-2 4 2 8 6 8-4 6-14 4-16-4-6 6-8 12-8 16z', BLU) + Ln('M6 54h52', 3),
+    /* crane */ Pt('M6 34l20-6 6-18 6 18 20 6-20 6-6 16-6-16z', WHT) + Pt('M32 10l-4 12h8z', RED) + Ln('M26 28l6 4 6-4', 2),
+    /* bonsai */ Rc(16, 46, 32, 10, 3, '#5a7fa8') + Ln('M32 46c0-8-6-10-4-18', 4, BRN) + El(22, 24, 12, 8, GRN) + El(42, 20, 12, 8, GRN) + El(32, 12, 10, 6, DGR),
+  ],
+};
+
+/* gray version for covered tiles: every color is mapped to a warm gray by its lightness */
+function grayIcon(svg) {
+  return svg.replace(/#([0-9a-f]{6})\b/gi, (m, h) => {
+    if (m.toLowerCase() === K) return '#4d4943';
+    const r = parseInt(h.slice(0, 2), 16), g = parseInt(h.slice(2, 4), 16), b = parseInt(h.slice(4, 6), 16);
+    const L = (0.3 * r + 0.55 * g + 0.15 * b) / 255;
+    const v = Math.round(118 + L * 92);
+    const hex = n => Math.max(0, Math.min(255, n)).toString(16).padStart(2, '0');
+    return '#' + hex(v) + hex(v - 4) + hex(v - 12);
+  });
+}
 
 /* ===== Original illustrations (SVG) ===== */
 const INK = '#1f1d1a';
@@ -611,7 +763,7 @@ const $ = s => document.querySelector(s);
 const KEY = 'tiles1000.v1';
 const PER_PAGE = 60;
 const PAGES = Math.ceil(TOTAL_LEVELS / PER_PAGE);
-const RATIO = 1.1; // tile height / width
+const RATIO = 1; // tiles are square, like the reference game
 
 let S = { unlocked: 1, best: {}, sound: true };
 try { Object.assign(S, JSON.parse(localStorage.getItem(KEY)) || {}); } catch (e) {}
@@ -729,6 +881,7 @@ function startLevel(n) {
   $('#score').textContent = '0';
   $('.lvname').innerHTML = `Level ${n}` + (L.p.hard ? ' · <b>HARD</b>' : '');
   $('#tray').classList.remove('full'); $('#btnSlot').classList.remove('gone');
+  buildSprite(L);
   const b = board(); b.innerHTML = '';
   b.classList.toggle('hideCov', L.p.hidden);
   const order = G.tiles.slice().sort((a, c) => a.z - c.z || a.y - c.y || a.x - c.x);
@@ -743,24 +896,37 @@ function startLevel(n) {
   layoutBoard(); refreshFree(true); layoutTray(); updateBoosters();
   const ban = el('div', 'banner', `<div class="t">Level ${n}</div>` + (L.p.hard ? '<div class="h">HARD LEVEL</div>' : ''));
   $('#boardWrap').appendChild(ban); setTimeout(() => ban.remove(), 1700);
-  if (n === 25 && !S.best[25]) setTimeout(() => toast('New: <b>?</b> tiles — you only see what they are after picking them!'), 900);
-  if (n === 450 && !S.best[450]) setTimeout(() => toast('From now on, covered tiles may hide their picture.'), 900);
+  if (n === 1 && !S.best[1]) setTimeout(() => toast('<b>?</b> tiles only show what they are after you pick them.'), 900);
+  if (n === 400 && !S.best[400]) setTimeout(() => toast('From now on, covered tiles may hide their picture.'), 900);
 }
 
+function buildSprite(L) {
+  const set = ICONS[THEMES[L.theme].key];
+  let html = '';
+  for (let k = 0; k < L.p.kinds; k++) {
+    const svg = set[L.icons[k]];
+    html += `<symbol id="k${k}c" viewBox="0 0 64 64">${svg}</symbol><symbol id="k${k}g" viewBox="0 0 64 64">${grayIcon(svg)}</symbol>`;
+  }
+  $('#sprite').innerHTML = html;
+}
+function faceHTML(t, reveal) {
+  if (t.q && !reveal) return '<div class="face"><span class="qm">?</span></div>';
+  return `<div class="face"><svg class="ic" viewBox="0 0 64 64"><use class="c" href="#k${t.k}c"/><use class="g" href="#k${t.k}g"/></svg></div>`;
+}
 function tileEl(t, reveal) {
   const e = el('div', 'tile' + (t.q && !reveal ? ' q' : ''));
-  const icon = t.q && !reveal ? '?' : G.L.icons[t.k];
-  e.innerHTML = `<div class="face"><span class="ic">${icon}</span></div>`;
+  e.innerHTML = faceHTML(t, reveal);
   return e;
 }
 
 function geomVars(target, u, w, h) {
   target.style.setProperty('--tw', w + 'px');
   target.style.setProperty('--th', h + 'px');
-  target.style.setProperty('--dp', Math.max(2.5, u * 0.2).toFixed(1) + 'px');
-  target.style.setProperty('--bw', Math.max(1.6, Math.min(3, u * 0.1)).toFixed(1) + 'px');
-  target.style.setProperty('--rad', (w * 0.2).toFixed(1) + 'px');
-  target.style.setProperty('--fs', (w * 0.6).toFixed(1) + 'px');
+  target.style.setProperty('--dp', Math.max(2, u * 0.2).toFixed(1) + 'px');
+  target.style.setProperty('--bw', Math.max(1.4, Math.min(2.6, u * 0.08)).toFixed(1) + 'px');
+  target.style.setProperty('--rad', (w * 0.15).toFixed(1) + 'px');
+  target.style.setProperty('--fs', (w * 0.62).toFixed(1) + 'px');
+  target.style.setProperty('--is', (w * 0.84).toFixed(1) + 'px');
 }
 
 function layoutBoard() {
@@ -771,10 +937,12 @@ function layoutBoard() {
   const minY = Math.min(...ts.map(t => t.y)), maxY = Math.max(...ts.map(t => t.y));
   const maxZ = Math.max(...ts.map(t => t.z));
   const Wh = maxX - minX + 2, Hh = maxY - minY + 2;
-  const SX = 0.07, SY = 0.13; // per-layer visual shift (in u)
-  const u = Math.min((wrap.width - 10) / (Wh + 0.3 + maxZ * SX), (wrap.height - 10) / (Hh * RATIO + 0.3 + maxZ * SY), 38);
-  const dp = Math.max(2.5, u * 0.2);
-  const w = 2 * u - dp - 1, h = 2 * u * RATIO - dp - 1;
+  const SX = 0.12, SY = 0.12; // per-layer visual shift (in u)
+  // fixed tile size like the reference (one tile step = 11.9% of screen width); shrink only if the board would not fit
+  const unitW = Math.min(window.innerWidth, 460) * 0.0595;
+  const u = Math.min(unitW, (wrap.width - 6) / (Wh + 0.25 + maxZ * SX), (wrap.height - 6) / (Hh * RATIO + 0.25 + maxZ * SY));
+  const dp = Math.max(2, u * 0.2);
+  const w = 2 * u - dp, h = 2 * u * RATIO - dp;
   const b = board();
   geomVars(b, u, w, h);
   const bw = Wh * u + maxZ * SX * u, bh = Hh * u * RATIO + maxZ * SY * u;
@@ -806,16 +974,12 @@ function refreshFree(initial) {
 /* ----- tray geometry ----- */
 function slotRect(i) {
   const r = $('#bar').getBoundingClientRect();
-  const pad = 3, gap = 2;
-  const s = (r.width - pad * 2 - gap * (G.cap - 1)) / G.cap;
-  const h = Math.min(s * RATIO, r.height - pad * 2);
-  return { x: r.left + pad + i * (s + gap), y: r.top + (r.height - h) / 2, w: s, h };
+  const pad = 3, gap = 1.5;
+  const s = Math.min((r.width - pad * 2 - gap * (G.cap - 1)) / G.cap, r.height - pad * 2);
+  return { x: r.left + pad + i * (s + gap), y: r.top + (r.height - s) / 2, w: s, h: s };
 }
 function sizeTray() {
-  const bar = $('#bar'), bw = bar.getBoundingClientRect().width;
-  const s = (bw - 6 - 2 * (G.cap - 1)) / G.cap;
-  bar.style.height = Math.round(s * RATIO + 8) + 'px';
-  const r = bar.getBoundingClientRect();
+  const r = $('#bar').getBoundingClientRect();
   const s0 = slotRect(0);
   const u = s0.w / 2;
   const dp = Math.max(2, u * 0.16);
@@ -973,7 +1137,7 @@ function useShuffle() {
     setTimeout(() => {
       if (!t.el) return;
       t.el.classList.toggle('q', t.q);
-      t.el.querySelector('.ic').textContent = t.q ? '?' : G.L.icons[t.k];
+      t.el.innerHTML = faceHTML(t, false);
     }, 250);
     setTimeout(() => t.el && t.el.classList.remove('spin'), 520);
   });
