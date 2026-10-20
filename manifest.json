@@ -1,6 +1,6 @@
 {
-  "name": "Tiles 1000",
-  "short_name": "Tiles 1000",
+  "name": "Jogo da Prin",
+  "short_name": "Jogo da Prin",
   "description": "Tile-matching puzzle with 1000 levels",
   "start_url": "./",
   "scope": "./",

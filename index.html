@@ -3,12 +3,12 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
-<title>Tiles 1000</title>
+<title>Jogo da Prin</title>
 <meta name="description" content="Tile-matching puzzle with 1000 levels">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
-<meta name="apple-mobile-web-app-title" content="Tiles 1000">
+<meta name="apple-mobile-web-app-title" content="Jogo da Prin">
 <meta name="theme-color" content="#fbf3e0">
 <link rel="manifest" href="manifest.json">
 <link rel="apple-touch-icon" href="icon-180.png">
@@ -52,7 +52,7 @@ button{font:inherit;color:inherit;border:0;background:none;padding:0;cursor:poin
 
 /* ---------- home / level select ---------- */
 #home .head{position:relative;z-index:2;padding-top:calc(var(--sat) + 74px);text-align:center}
-#home h1{margin:0;font-size:38px;font-weight:900;letter-spacing:.3px}
+#home h1{margin:0;font-size:min(38px,8.4vw);font-weight:900;letter-spacing:.3px}
 #home .sub{margin:2px 0 0;font-weight:800;color:#5a554c;font-size:17px}
 #home .gear{position:absolute;right:18px;top:calc(var(--sat) + 70px)}
 .dots{display:flex;justify-content:center;gap:6px;margin:12px 0 4px;flex-wrap:wrap;padding:0 40px}
@@ -181,13 +181,16 @@ button{font:inherit;color:inherit;border:0;background:none;padding:0;cursor:poin
 #game #trayWrap{position:absolute;left:50%;transform:translateX(-50%);top:68dvh;margin:0}
 #game .boosters{position:absolute;left:0;right:0;top:76dvh;margin:0}
 .toast{bottom:auto;top:60dvh}
+.dots{align-items:center;min-height:30px}
+.dots i{cursor:pointer;box-shadow:0 0 0 7px transparent}
+.dots .pglabel{flex-basis:100%;text-align:center;font-weight:800;font-size:13px;color:#7a7468;margin-top:2px}
 </style>
 </head>
 <body>
 <section id="home" class="screen">
   <div class="deco"></div>
   <div class="head">
-    <h1>Tiles 1000</h1>
+    <h1>Jogo da Prin</h1>
     <p class="sub">one tile, a thousand worlds</p>
     <div class="dots"></div>
     <button class="b3 sq gear" aria-label="Settings"></button>
@@ -217,8 +220,9 @@ button{font:inherit;color:inherit;border:0;background:none;padding:0;cursor:poin
 <svg id="sprite" width="0" height="0" style="position:absolute" aria-hidden="true"></svg>
 <div id="fly"></div>
 <div id="ov" class="ov"></div>
-<script>/* ===== Level generator: 1000 deterministic, always-solvable levels ===== */
-const TOTAL_LEVELS = 1000;
+<script>/* ===== Level generator: 6000 deterministic, always-solvable levels ===== */
+const TOTAL_LEVELS = 6000;
+const BASE_LEVELS = 1000; // levels 1-1000 keep their original curve
 
 function mulberry32(a) {
   return function () {
@@ -233,7 +237,8 @@ const clamp = (v, a, b) => Math.max(a, Math.min(b, v));
 /* Difficulty curve: starts where a normal game is mid-way and keeps climbing.
    s in [0,1]; every 10th level is a spike, the next one a short breather. */
 function levelParams(n) {
-  const base = Math.pow((n - 1) / (TOTAL_LEVELS - 1), 0.6);
+  if (n > BASE_LEVELS) return extendedParams(n);
+  const base = Math.pow((n - 1) / (BASE_LEVELS - 1), 0.6);
   const m = n % 10;
   const hard = m === 0;
   const s = clamp(base + (hard ? 0.07 : m === 1 && n > 10 ? -0.03 : 0), 0, 1);
@@ -248,8 +253,27 @@ function levelParams(n) {
   const layers = Math.round(3 + s * 2.5);
   const mystery = Math.round(2 + s * 3 + (hard ? 1 : 0)); // number of ? tiles
   const hidden = n >= 900 || (n >= 700 && n % 2 === 0) || (n >= 400 && n % 4 === 0);
-  const boosters = { undo: 1, hint: 1, shuffle: 1, slot: 1 };
-  const P = { n, d: s, hard, tiles, kinds, maxTray, pNew, cover, layers, mystery, hidden, boosters };
+  return finishParams({ n, d: s, hard, tiles, kinds, maxTray, pNew, cover, layers, mystery, hidden, iconCount: 20 });
+}
+
+/* Levels 1001-6000: everything keeps climbing past where level 1000 stopped. */
+function extendedParams(n) {
+  const e = Math.pow((n - BASE_LEVELS) / (TOTAL_LEVELS - BASE_LEVELS), 0.7);
+  const m = n % 10;
+  const hard = m === 0;
+  const x = clamp(e + (hard ? 0.05 : 0), 0, 1);
+  let tiles = Math.round((210 + 36 * x) / 3) * 3 + (hard ? 6 : 0);
+  tiles = clamp(tiles, 210, 252);
+  const kinds = clamp(Math.round(21 + x * 3), 21, 24);
+  const pNew = clamp(0.96 + x * 0.02, 0, 0.98);
+  const cover = clamp(0.89 + x * 0.04, 0, 0.93);
+  const layers = Math.round(6 + x * 2);
+  const mystery = Math.round(7 + x * 7 + (hard ? 2 : 0));
+  return finishParams({ n, d: 1, hard, tiles, kinds, maxTray: 6, pNew, cover, layers, mystery, hidden: true, iconCount: 24 });
+}
+
+function finishParams(P) {
+  P.boosters = { undo: 3, hint: 3, shuffle: 3, slot: 3 };
   if (typeof globalThis.PARAM_OVERRIDE === 'function') Object.assign(P, globalThis.PARAM_OVERRIDE(P));
   return P;
 }
@@ -435,7 +459,7 @@ function generateLevel(n) {
     idx.slice(0, m).forEach(i => tiles[i].q = true);
   }
   const theme = (n * 3) % THEMES.length;
-  const icons = [...Array(THEMES[theme].count).keys()];
+  const icons = [...Array(p.iconCount).keys()];
   for (let i = icons.length - 1; i > 0; i--) { const j = Math.floor(rnd() * (i + 1)); [icons[i], icons[j]] = [icons[j], icons[i]]; }
   const lvl = { n, p, tiles, solution, theme, icons: icons.slice(0, p.kinds), shape: lay.shape, cov: lay.cov };
   levelCache.set(n, lvl);
@@ -492,6 +516,10 @@ const ICONS = {
     /* mango */ Pt('M14 40c-4-16 10-30 26-28 10 2 13 12 10 22-4 14-18 22-28 18-4-2-7-6-8-12z', '#f8b84a') + Pt('M38 12c4-4 10-4 13-1-4 5-10 5-13 1z', GRN) + Hl('M20 38c0-8 6-16 14-18'),
     /* blueberries */ Ci(22, 40, 11, '#5a73c9') + Ci(42, 40, 11, '#5a73c9') + Ci(32, 24, 11, '#5a73c9') + Ln('M30 22l4 4M34 22l-4 4M20 38l4 4M24 38l-4 4M40 38l4 4M44 38l-4 4', 2),
     /* chili */ Pt('M44 16c4 0 6 4 4 8-6 16-18 28-34 30-3 0-3-3-1-4 14-6 22-18 26-30 1-3 3-4 5-4z', RED) + Pt('M44 16c0-4 3-8 8-9', 'none') + Pt('M40 18c2-3 6-4 10-2-1 3-5 5-10 2z', GRN),
+    /* starfruit */ Pt(star5(32, 34, 25, 12), YEL) + Pt(star5(32, 34, 9, 4.5), YEL2) + Ln('M32 9V5', 3),
+    /* fig */ Ln('M32 10V5') + Pt('M32 10c3 0 4 4 4 8 0 6 14 12 14 24 0 9-8 14-18 14S14 51 14 42c0-12 14-18 14-24 0-4 1-8 4-8z', '#8d4f9f') + Hl('M21 41c0-4 2-7 4-9'),
+    /* cashew */ Pt('M18 30c0-5 6-8 14-8s14 3 14 8c0 7 4 12 4 18 0 6-8 9-18 9s-18-3-18-9c0-6 4-11 4-18z', '#f2913d') + Pt('M22 22c-3-9 4-16 11-14 7 1 9 8 5 11-3 2-7-1-9 1-2 2-5 4-7 2z', '#a8b56b') + Hl('M23 38c0-4 2-7 4-8'),
+    /* dragon fruit */ Pt('M32 19c-3-5-2-11 0-14 2 3 3 9 0 14z', GRN2) + El(32, 38, 17, 19, '#e8569a') + Pt('M20 28c-6-2-10-6-10-10 6 0 10 4 12 8z', GRN2) + Pt('M44 28c6-2 10-6 10-10-6 0-10 4-12 8z', GRN2) + Pt('M22 48c-6 0-10 2-12 6 6 1 10-1 13-4z', GRN2) + Pt('M42 48c6 0 10 2 12 6-6 1-10-1-13-4z', GRN2),
   ],
   winter: [
     /* candle */ Pt('M32 8c4 5 4 9 0 11-4-2-4-6 0-11z', YEL) + Rc(23, 22, 18, 26, 3, ORG) + Pt('M23 28c4 3 6-2 9 1s6 2 9-1', 'none') + leaf(31, 50, 160, 1.1, GRN) + leaf(33, 50, 20, 1.1, GRN) + Dt(32, 50, 3, RED),
@@ -514,6 +542,10 @@ const ICONS = {
     /* santa hat */ Pt('M14 44c2-18 12-30 26-30 8 0 12 8 10 22-2-6-6-10-10-10-10 0-16 10-16 18z', RED) + Rc(10, 42, 36, 10, 5, WHT) + Ci(50, 40, 6, WHT),
     /* lantern */ Ln('M26 12a6 6 0 0 1 12 0') + Rc(22, 12, 20, 6, 2, '#5a5550') + Rc(20, 18, 24, 32, 4, YEL2) + Ln('M20 26h24M20 42h24M32 18v32', 2) + Pt('M32 28c3 4 3 7 0 9-3-2-3-5 0-9z', ORG) + Rc(18, 50, 28, 6, 2, '#5a5550'),
     /* reindeer */ Ln('M22 22c-4-6-4-12 0-16M22 14l-6-2M42 22c4-6 4-12 0-16M42 14l6-2', 3.4, BRN) + El(32, 38, 15, 17, BRN2) + Dt(26, 34, 2.2) + Dt(38, 34, 2.2) + Ci(32, 46, 5, RED) + El(18, 28, 5, 3, BRN2, -30) + El(46, 28, 5, 3, BRN2, 30),
+    /* snow globe */ Ci(32, 28, 19, BLU2) + Pt('M32 15l-8 15h16z', GRN) + Dt(21, 22, 1.8, WHT) + Dt(42, 20, 1.8, WHT) + Dt(40, 33, 1.8, WHT) + Dt(24, 35, 1.8, WHT) + Rc(13, 43, 38, 11, 3, BRN2),
+    /* ice skate */ Pt('M16 8h16v22c9 0 16 4 16 12v4H16z', WHT) + Ln('M20 15h8M20 22h8', 2.4, RED) + Ln('M20 46v8M42 46v8', 3) + Ln('M10 54h42c3 0 5-2 5-5', 3.4),
+    /* scarf */ Pt('M10 16c11 7 33 7 44 0v11c-11 7-33 7-44 0z', RED) + Pt('M35 25h11v26H35z', RED) + Ln('M35 33h11M35 41h11', 2.6, WHT) + Ln('M37 51v6M40.5 51v6M44 51v6', 2.2),
+    /* wrapped candy */ Pt('M20 32L7 23v18z', PUR2) + Pt('M44 32l13-9v18z', PUR2) + El(32, 32, 14, 11, PUR) + Ln('M28 22l-5 19M38 23l-5 19', 2.4, WHT),
   ],
   snack: [
     /* hotdog */ Pt('M10 34c0-6 6-8 12-8h20c6 0 12 2 12 8s-6 12-22 12-22-6-22-12z', '#f4c27a') + Pt('M8 32c0-4 4-6 8-6h32c4 0 8 2 8 6s-4 6-8 6H16c-4 0-8-2-8-6z', '#d9534f') + Ln('M16 32c3-2 5 2 8 0s5 2 8 0 5 2 8 0 5 2 8 0', 2.4, YEL),
@@ -536,6 +568,10 @@ const ICONS = {
     /* popcorn */ [[22, 18], [32, 14], [42, 18], [27, 24], [38, 24]].map(([x, y]) => Ci(x, y, 7, WHT)).join('') + Pt('M14 24h36l-5 32H19z', RED) + Pt('M23 24l2 32h6l-1-32zM34 24l-1 32h6l2-32z', WHT),
     /* sausage */ Pt('M14 46c-4-2-4-8 0-12 10-10 20-18 32-22 4-2 8 2 6 6-4 12-12 22-24 28-4 2-10 2-14 0z', '#ef7a6a') + Ln('M20 38l4 4M28 30l4 4M36 24l4 4', 2.2, '#fbc7b8') + Ln('M12 48l-4 4M50 14l4-4'),
     /* taco */ Pt('M8 44a24 24 0 0 1 48 0z', YEL) + Ln('M14 32c4-4 6 0 10-4s6 0 10-4 6 0 10 0 6 4 8 8', 3.6, GRN) + Dt(24, 36, 2.6, RED) + Dt(36, 34, 2.6, RED) + Pt('M8 44a24 24 0 0 1 48 0', 'none'),
+    /* pretzel */ Ln('M32 48c-13 0-21-8-21-19 0-8 6-13 12-13 10 0 16 14 18 32M32 48c13 0 21-8 21-19 0-8-6-13-12-13-10 0-16 14-18 32', 9) + Ln('M32 48c-13 0-21-8-21-19 0-8 6-13 12-13 10 0 16 14 18 32M32 48c13 0 21-8 21-19 0-8-6-13-12-13-10 0-16 14-18 32', 4.6, BRN2) + Dt(17, 26, 1.6, WHT) + Dt(46, 24, 1.6, WHT) + Dt(26, 42, 1.6, WHT),
+    /* soda */ Ln('M34 16l7-12', 3.4) + Pt('M18 22h28l-4 34H22z', RED) + Rc(15, 15, 34, 8, 3, WHT) + Rc(21, 32, 22, 10, 2, WHT) + Ln('M26 37h12', 2.2, RED),
+    /* cake slice */ Pt('M8 36l44-16v30H8z', YEL2) + Pt('M8 36l44-16v7L8 43z', PNK) + Ln('M8 47h44', 2.4) + Ci(42, 17, 5, RED),
+    /* sandwich */ Rc(9, 14, 46, 11, 5, BRN2) + Pt('M9 28c4-4 8 4 12 0s8 4 12 0 8 4 12 0 6 4 10 0v5H9z', GRN) + Pt('M11 34h42l-6 7-5-4-5 4-5-4-5 4-5-4-5 4z', YEL) + Rc(9, 41, 46, 11, 4, BRN2),
   ],
   garden: [
     /* rose */ Ci(32, 32, 20, RED) + Ln('M32 32c0-4 6-4 6 0 0 6-12 6-12 0 0-8 18-8 18 0 0 10-24 12-24 0 0-10 20-14 26-4', 2.4),
@@ -558,6 +594,10 @@ const ICONS = {
     /* acorn */ Pt('M18 30h28c0 14-6 26-14 26S18 44 18 30z', BRN2) + Pt('M14 30c0-10 8-16 18-16s18 6 18 16z', BRN) + Ln('M32 14V8', 3.4) + Ln('M20 22l4 4M28 18l4 4M38 18l4 4', 1.6, '#e2b47e'),
     /* carrot */ Pt('M44 20c4 4 2 8-2 12L14 54c-2 2-5-1-3-3l21-30c4-4 8-5 12-1z', ORG) + Ln('M30 30l4 4M24 38l3 3M20 46l3 3', 2) + Pt('M44 20c0-6 2-10 6-12-1 5 0 8 4 10-4 2-6 2-10 2z', GRN),
     /* pumpkin */ Ln('M32 18c0-5 2-8 5-10', 3.4, BRN) + Pt('M32 18c-4-3-12-3-17 2-6 6-6 22 0 29 5 5 12 6 17 3 5 3 12 2 17-3 6-7 6-23 0-29-5-5-13-5-17-2z', ORG) + Ln('M32 19c-4 8-4 26 0 33M22 21c-4 9-3 21 1 29M42 21c4 9 3 21-1 29', 2.4) + leaf(37, 13, -10, .8),
+    /* sprout */ Pt('M12 52c0-6 9-9 20-9s20 3 20 9z', BRN) + Ln('M32 44V26', 3.4) + leaf(31, 30, -150, 1.4, GRN) + leaf(33, 28, -30, 1.4, GRN),
+    /* rainbow */ Ln('M8 46a24 24 0 0 1 48 0', 8) + Ln('M8 46a24 24 0 0 1 48 0', 4.6, RED) + Ln('M15 46a17 17 0 0 1 34 0', 8) + Ln('M15 46a17 17 0 0 1 34 0', 4.6, YEL) + Ln('M22 46a10 10 0 0 1 20 0', 8) + Ln('M22 46a10 10 0 0 1 20 0', 4.6, BLU) + Ci(10, 48, 6, WHT) + Ci(17, 50, 5, WHT) + Ci(54, 48, 6, WHT) + Ci(47, 50, 5, WHT),
+    /* hibiscus */ [0, 72, 144, 216, 288].map(a => `<g transform="rotate(${a} 32 32)">${El(32, 18, 9, 12, '#ef5a6f')}</g>`).join('') + Ci(32, 32, 6, YEL) + Ln('M32 32l9-11', 2.4) + Dt(41, 21, 2.4, YEL),
+    /* pinecone */ Ln('M32 9V4') + Pt('M32 9c10 6 16 18 16 28 0 10-7 19-16 19S16 47 16 37c0-10 6-22 16-28z', BRN2) + Ln('M22 25c6 4 14 4 20 0M18 35c8 5 20 5 28 0M20 45c7 4 17 4 24 0', 2.4),
   ],
   zen: [
     /* sushi */ Ci(32, 32, 22, '#3a4a44') + Ci(32, 32, 16, WHT) + Pt('M32 24c-6-4-12 0-12 6 0 6 6 10 12 14 6-4 12-8 12-14 0-6-6-10-12-6z', RED),
@@ -580,6 +620,10 @@ const ICONS = {
     /* wave */ Pt('M6 50c4-20 18-34 34-34 10 0 16 6 16 12-4-4-12-4-14 2-2 4 2 8 6 8-4 6-14 4-16-4-6 6-8 12-8 16z', BLU) + Ln('M6 54h52', 3),
     /* crane */ Pt('M6 34l20-6 6-18 6 18 20 6-20 6-6 16-6-16z', WHT) + Pt('M32 10l-4 12h8z', RED) + Ln('M26 28l6 4 6-4', 2),
     /* bonsai */ Rc(16, 46, 32, 10, 3, '#5a7fa8') + Ln('M32 46c0-8-6-10-4-18', 4, BRN) + El(22, 24, 12, 8, GRN) + El(42, 20, 12, 8, GRN) + El(32, 12, 10, 6, DGR),
+    /* kokeshi */ Pt('M22 34h20l4 22H18z', RED) + Ci(32, 22, 13, CRM) + Pt('M19 22c0-9 6-14 13-14s13 5 13 14c-4-4-8-6-13-6s-9 2-13 6z', '#3a3530') + Ln('M27 25c1 1 2 1 3 0M34 25c1 1 2 1 3 0', 1.8) + Ci(32, 45, 4.5, YEL),
+    /* fox mask */ Pt('M10 10l14 11h16l14-11-4 21c0 12-10 22-18 25-8-3-18-13-18-25z', WHT) + Pt('M14 15l8 7-6 4z', RED) + Pt('M50 15l-8 7 6 4z', RED) + Ln('M22 32l6 2M42 32l-6 2', 2.6, RED) + Dt(32, 48, 2.6),
+    /* rice bowl */ Pt('M12 30c2-9 10-14 20-14s18 5 20 14z', WHT) + Pt('M8 30h48c0 14-11 24-24 24S8 44 8 30z', BLU) + Ci(32, 22, 4, RED) + Ln('M16 39c5 3 11 3 16 0s11-3 16 0', 2.2, WHT) + Rc(24, 54, 16, 4, 2, '#4d7cc2'),
+    /* kagami mochi */ Pt('M12 55h40l-4-8H16z', RED) + El(32, 41, 17, 8, WHT) + El(32, 30, 12, 6, WHT) + Ci(32, 19, 6, ORG) + leaf(34, 14, -30, .6),
   ],
 };
 
@@ -811,22 +855,14 @@ function show(id) { document.querySelectorAll('.screen').forEach(s => s.classLis
 /* ================= HOME / LEVEL SELECT ================= */
 function buildHome() {
   $('#home .gear').innerHTML = ICON.gear;
-  const pager = $('#pager'), dots = $('.dots');
-  pager.innerHTML = ''; dots.innerHTML = '';
-  for (let p = 0; p < PAGES; p++) {
-    const page = el('div', 'page'), grid = el('div', 'grid');
-    for (let n = p * PER_PAGE + 1; n <= Math.min(TOTAL_LEVELS, (p + 1) * PER_PAGE); n++) {
-      const b = el('button', 'lv'); b.dataset.n = n;
-      b.innerHTML = `<span class="f">${n}</span>`;
-      grid.appendChild(b);
-    }
-    page.appendChild(grid); pager.appendChild(page);
-    dots.appendChild(el('i'));
-  }
+  const pager = $('#pager');
+  pager.innerHTML = '';
+  // 100 pages of 60 levels: page shells only; buttons are created when a page comes near the screen
+  for (let p = 0; p < PAGES; p++) pager.appendChild(el('div', 'page'));
+  let raf = 0;
   pager.addEventListener('scroll', () => {
-    const p = Math.round(pager.scrollLeft / pager.clientWidth);
-    [...dots.children].forEach((d, i) => d.classList.toggle('on', i === p));
-    if (p !== curPage) { curPage = p; setDeco($('#home .deco'), (p * 3) % THEMES.length, p + 50); }
+    if (raf) return;
+    raf = requestAnimationFrame(() => { raf = 0; onPage(Math.round(pager.scrollLeft / pager.clientWidth)); });
   }, { passive: true });
   pager.addEventListener('click', e => {
     const b = e.target.closest('.lv'); if (!b) return;
@@ -834,31 +870,57 @@ function buildHome() {
     if (n > S.unlocked) { SFX.deny(); b.classList.remove('shake'); void b.offsetWidth; b.classList.add('shake'); return; }
     SFX.click(); startLevel(n);
   });
+  $('.dots').addEventListener('click', e => {
+    const d = e.target.closest('i[data-p]'); if (!d) return;
+    pager.scrollTo({ left: +d.dataset.p * pager.clientWidth, behavior: 'smooth' });
+  });
   $('#home .gear').onclick = () => { SFX.click(); openSettings(); };
 }
-let curPage = -1;
-function refreshHome() {
-  document.querySelectorAll('.lv').forEach(b => {
-    const n = +b.dataset.n, done = !!S.best[n], locked = n > S.unlocked;
-    b.className = 'lv' + (done ? ' done' : '') + (locked ? ' locked' : '') + (!done && !locked ? ' cur' : '');
-    const bd = b.querySelector('.bd');
-    const want = done ? ICON.check : locked ? ICON.lock : '';
-    if (want) { if (bd) bd.innerHTML = want; else b.insertAdjacentHTML('beforeend', `<span class="bd">${want}</span>`); }
-    else if (bd) bd.remove();
-  });
+function fillPage(p) {
+  const page = $('#pager').children[p];
+  if (!page || page.firstChild) return;
+  const grid = el('div', 'grid');
+  for (let n = p * PER_PAGE + 1; n <= Math.min(TOTAL_LEVELS, (p + 1) * PER_PAGE); n++) {
+    const b = el('button', 'lv'); b.dataset.n = n;
+    b.innerHTML = `<span class="f">${n}</span>`;
+    paintLevel(b);
+    grid.appendChild(b);
+  }
+  page.appendChild(grid);
 }
+function onPage(p) {
+  p = Math.max(0, Math.min(PAGES - 1, p));
+  [p - 1, p, p + 1].forEach(fillPage);
+  if (p === curPage) return;
+  curPage = p;
+  setDeco($('#home .deco'), (p * 3) % THEMES.length, p + 50);
+  const start = Math.max(0, Math.min(PAGES - 7, p - 3));
+  let dots = '';
+  for (let i = start; i < Math.min(PAGES, start + 7); i++) dots += `<i data-p="${i}" class="${i === p ? 'on' : ''}"></i>`;
+  const a = p * PER_PAGE + 1, z = Math.min(TOTAL_LEVELS, (p + 1) * PER_PAGE);
+  $('.dots').innerHTML = dots + `<span class="pglabel">Levels ${a}–${z}</span>`;
+}
+let curPage = -1;
+function paintLevel(b) {
+  const n = +b.dataset.n, done = !!S.best[n], locked = n > S.unlocked;
+  b.className = 'lv' + (done ? ' done' : '') + (locked ? ' locked' : '') + (!done && !locked ? ' cur' : '');
+  const bd = b.querySelector('.bd');
+  const want = done ? ICON.check : locked ? ICON.lock : '';
+  if (want) { if (bd) bd.innerHTML = want; else b.insertAdjacentHTML('beforeend', `<span class="bd">${want}</span>`); }
+  else if (bd) bd.remove();
+}
+function refreshHome() { document.querySelectorAll('.lv').forEach(paintLevel); }
 function goHome(focus) {
   closeModals(); stopTimer();
   show('home'); refreshHome();
   const n = focus || Math.min(S.unlocked, TOTAL_LEVELS);
   const p = Math.floor((n - 1) / PER_PAGE);
   const pager = $('#pager');
+  curPage = -1; onPage(p);
   requestAnimationFrame(() => {
     pager.scrollLeft = p * pager.clientWidth;
     const b = pager.querySelector(`.lv[data-n="${n}"]`), page = pager.children[p];
     if (b && page) page.scrollTop = Math.max(0, page.scrollTop + b.getBoundingClientRect().top - page.getBoundingClientRect().top - page.clientHeight / 2 + 40);
-    if (curPage !== p) { curPage = p; setDeco($('#home .deco'), (p * 3) % THEMES.length, p + 50); }
-    [...$('.dots').children].forEach((d, i) => d.classList.toggle('on', i === p));
   });
 }
 
@@ -1144,9 +1206,9 @@ function useShuffle() {
   updateBoosters();
 }
 function useSlot() {
-  if (!G || G.over || G.boosters.slot <= 0 || G.cap > 7) return;
-  G.boosters.slot--; G.cap = 8; SFX.hint();
-  $('#btnSlot').classList.add('gone'); $('#tray').classList.add('full');
+  if (!G || G.over || G.boosters.slot <= 0 || G.cap >= 10) return;
+  G.boosters.slot--; G.cap++; SFX.hint();
+  if (G.boosters.slot <= 0) { $('#btnSlot').classList.add('gone'); $('#tray').classList.add('full'); }
   layoutTray(); updateBoosters();
 }
 
@@ -1195,7 +1257,7 @@ function victory() {
     const last = n >= TOTAL_LEVELS;
     const ov = modal(`<div class="art">${ART.victory()}</div><h2>Victory</h2><div class="lvl">Level ${n}</div>
       <dl class="stat"><dt>Time:</dt><dd>${fmtTime(secs)}</dd><dt>Best Score:</dt><dd>${S.best[n]}</dd></dl>
-      ${last ? '<p class="msg">You beat all 1000 levels! 🏆</p>' : ''}<div class="row"></div>`);
+      ${last ? `<p class="msg">You beat all ${TOTAL_LEVELS} levels! 🏆</p>` : ''}<div class="row"></div>`);
     bindRow(ov, [
       btn('sq', ICON.home, () => goHome(n)),
       btn('lime main', last ? 'AGAIN' : 'NEXT', () => startLevel(last ? n : n + 1)),
