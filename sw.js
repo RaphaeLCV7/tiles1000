@@ -1,5 +1,5 @@
 // Network first (so a new upload shows up right away), cache as offline fallback.
-const CACHE = 'tiles1000-v5';
+const CACHE = 'tiles1000-v6';
 const SHELL = ['./', 'index.html', 'manifest.json', 'icon-180.png', 'icon-192.png', 'icon-512.png'];
 self.addEventListener('install', e => { e.waitUntil(caches.open(CACHE).then(c => c.addAll(SHELL)).then(() => self.skipWaiting())); });
 self.addEventListener('activate', e => {

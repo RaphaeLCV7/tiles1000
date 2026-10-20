@@ -184,6 +184,7 @@ button{font:inherit;color:inherit;border:0;background:none;padding:0;cursor:poin
 .dots{align-items:center;min-height:30px}
 .dots i{cursor:pointer;box-shadow:0 0 0 7px transparent}
 .dots .pglabel{flex-basis:100%;text-align:center;font-weight:800;font-size:13px;color:#7a7468;margin-top:2px}
+.card h2.win{font-size:min(38px,9.4vw);line-height:1.25;text-wrap:balance}
 </style>
 </head>
 <body>
@@ -1255,7 +1256,7 @@ function victory() {
   setTimeout(() => {
     SFX.win();
     const last = n >= TOTAL_LEVELS;
-    const ov = modal(`<div class="art">${ART.victory()}</div><h2>Victory</h2><div class="lvl">Level ${n}</div>
+    const ov = modal(`<div class="art">${ART.victory()}</div><h2 class="win">Parabéns Prin!</h2><div class="lvl">Level ${n}</div>
       <dl class="stat"><dt>Time:</dt><dd>${fmtTime(secs)}</dd><dt>Best Score:</dt><dd>${S.best[n]}</dd></dl>
       ${last ? `<p class="msg">You beat all ${TOTAL_LEVELS} levels! 🏆</p>` : ''}<div class="row"></div>`);
     bindRow(ov, [
